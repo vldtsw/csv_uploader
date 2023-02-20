@@ -7,3 +7,4 @@ SCRIPT_PATH="add_to_source_review_gsheet.py"
 source "$VENV_PATH/bin/activate"
 python -u "$SCRIPT_PATH"
 deactivate
+read -p "Press any key to close this window..."
