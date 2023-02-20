@@ -28,6 +28,7 @@ def add_to_source_review_gsheet(spreadsheet_id, csv_file_path):
     """
     
     # todo: add starting and finished
+    # todo: add progress bar
     
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -44,7 +45,7 @@ def add_to_source_review_gsheet(spreadsheet_id, csv_file_path):
             # flow = InstalledAppFlow.from_client_secrets_file(os.getenv("GOOGLE_SHEET_API_CREDENTIALS"), SCOPES)
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
-            # fixme: this is not working??
+            # fixme: this is not working
         # Save the credentials for the next run
         with open("token.json", "w") as token:
             token.write(creds.to_json())
@@ -110,13 +111,15 @@ def add_to_source_review_gsheet(spreadsheet_id, csv_file_path):
                 )
                 .execute()
             )
-            print(f'Range created - {response["updates"]["updatedRange"].split("!")[-1]}')
+            # print(f'Range created - {response["updates"]["updatedRange"].split("!")[-1]}')
 
     except HttpError as error:
         print(f"An error occurred: {error}")
 
 
 if __name__ == "__main__":
+
+    print("Uploading CSV files to Google Sheet...")
     # Sorting to avoid shuffling large sources files with others from local uploading
     files = sorted(
         join(csv_files_path, file)
@@ -129,3 +132,5 @@ if __name__ == "__main__":
             spreadsheet_id=google_spreadsheet_id,
             csv_file_path=file
         )
+
+    print("Finished.")
